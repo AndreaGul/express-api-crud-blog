@@ -35,9 +35,15 @@ const generateSlug= (name)=>{
 }
 
 
+const eliminaFile = (filename)=>{
+  const filePath = path.join(__dirname, './public', filename);
+  fs.unlinkSync(filePath);
+}
+
 module.exports = {
   readJSON,
   writeJSON,
   updatePosts,
-  generateSlug
+  generateSlug,
+  eliminaFile
 };

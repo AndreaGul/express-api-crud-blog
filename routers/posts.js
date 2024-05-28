@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const postsController = require("../controllers/posts");
 const {destroy } = require("../middlewares/middlewareDestroy")
+const multer = require("multer");
+const uploader = multer({dest: "public"})
 
 router.get("/", postsController.index);
 
-router.post("/", postsController.store);
+router.post("/", uploader.single("immagine") ,postsController.store);
 
 router.get("/create", postsController.create)
 

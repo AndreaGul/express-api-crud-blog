@@ -1,10 +1,8 @@
 
 let posts = require('../db/posts.json');
-const { generateSlug, updatePosts } = require('../utils');
+const { generateSlug, updatePosts ,eliminaFile } = require('../utils');
 const path = require("path");
 const fs = require("fs");
-const slugify = require('slugify');
-
 
 const index = (req, res) => {
     
@@ -103,13 +101,20 @@ const store = (req,res)=>{
   res.format({
     html:()=>{
       if(!titolo || !contenuto || !tags){
-        return res.stats(400).send('Alcuni dati mancano');
+        // se pur si sia presentata questa condizione il file inserito e' comunque stato salvata quindi c'e' bisogno di eliminarlo
+         req.file?.filename && eliminaFile(req.file.filename);
+        return res.status(400).send('Alcuni dati mancano');
+      }else if(!req.file || !req.file.mimetype.includes('image')){
+         // se pur si sia presentata questa condizione il file inserito e' comunque stato salvata quindi c'e' bisogno di eliminarlo
+         req.file?.filename && eliminaFile(req.file.filename);
+        return res.status(400).send('immagine mancante o il file non e\' un immagine');
       }
       slug = generateSlug(titolo);
       const nuovoPost={
         titolo,
         slug,
         contenuto,
+        immagine: req.file.filename,
         tags,
       }
        posts = updatePosts([...posts, nuovoPost ]);
