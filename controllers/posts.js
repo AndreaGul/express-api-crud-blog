@@ -1,9 +1,10 @@
 
-const posts = require('../db/posts.json');
+let posts = require('../db/posts.json');
 const { readJSON } = require('../utils');
 const path = require("path");
 const fs = require("fs");
 const slugify = require('slugify');
+
 
 const index = (req, res) => {
     
@@ -98,9 +99,9 @@ const download = (req,res)=>{
 }
 
 const updatePosts = (nuoviPost) => {
-  const filePath = path.join(__dirname, '../db/posts.json');
-  fs.writeFileSync(filePath, JSON.stringify(nuoviPost));
-  pizze = nuoviPost;
+  const filePath= path.join(__dirname, '../db/posts.json');
+  fs.writeFileSync(filePath, JSON.stringify(nuoviPost))
+  posts = nuoviPost;
 }
 
 
@@ -130,7 +131,7 @@ const store = (req,res)=>{
         contenuto,
         tags,
       }
-
+      // posts = updatePosts([...posts, nuovoPost ]);
       updatePosts([...posts, nuovoPost ]);
       res.status(200).redirect('/posts')
     },
@@ -142,10 +143,13 @@ const store = (req,res)=>{
 
 }
 
+
+
 module.exports ={
   index,
   show,
   create,
   download,
-  store
+  store,
+ 
 }
