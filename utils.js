@@ -1,5 +1,8 @@
+let posts = require('./db/posts.json');
 const path = require('path');
 const fs = require('fs');
+const slugify = require('slugify');
+
 
 const readJSON = (fileName) => {
   const filePath = path.join(__dirname, 'db', `${fileName}.json`);
@@ -12,7 +15,29 @@ const writeJSON = (filename, data) => {
   fs.writeFileSync(filePath, json);
 };
 
+const updatePosts = (nuoviPost) => {
+  const filePath= path.join(__dirname, '../db/posts.json');
+  fs.writeFileSync(filePath, JSON.stringify(nuoviPost))
+  return nuoviPost;
+}
+
+
+const generateSlug= (name)=>{
+  baseSlug= slugify(name, { replacement: '-', lower: true, strict: true });
+  slugs = posts.map(post => post.slug);
+  let counter = 1;
+  let slug = baseSlug;
+  while(slugs.includes(slug)){
+    slug= `${baseSlug}-${counter}`;
+    counter ++
+  }
+  return slug
+}
+
+
 module.exports = {
   readJSON,
   writeJSON,
+  updatePosts,
+  generateSlug
 };

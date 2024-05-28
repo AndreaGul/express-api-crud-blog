@@ -1,6 +1,6 @@
 
 let posts = require('../db/posts.json');
-const { readJSON } = require('../utils');
+const { readJSON , generateSlug } = require('../utils');
 const path = require("path");
 const fs = require("fs");
 const slugify = require('slugify');
@@ -105,17 +105,6 @@ const updatePosts = (nuoviPost) => {
 }
 
 
-const generateSlug= (name)=>{
-  baseSlug= slugify(name, { replacement: '-', lower: true, strict: true });
-  slugs = posts.map(post => post.slug);
-  let counter = 1;
-  let slug = baseSlug;
-  while(slugs.includes(slug)){
-    slug= `${baseSlug}-${counter}`;
-    counter ++
-  }
-  return slug
-}
 
 const store = (req,res)=>{
   const{titolo,contenuto,tags}=req.body

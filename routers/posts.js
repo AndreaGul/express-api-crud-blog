@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const postsController = require("../controllers/posts");
-
+const {destroy} = require("../middlewares/middlewareDestroy")
 
 router.get("/", postsController.index);
 
@@ -11,7 +11,7 @@ router.get("/create", postsController.create)
 
 router.get("/:slug", postsController.show)
 
-router.delete("/:slug", postsController.destroy)
+router.delete("/:slug", destroy)
 
 router.get("/:slug/download", postsController.download)
 
