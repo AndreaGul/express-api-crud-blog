@@ -96,9 +96,23 @@ const download = (req,res)=>{
   }
 }
 
+const store = (req,res)=>{
+
+  res.format({
+    html:()=>{
+      res.status(200).redirect('/posts')
+    },
+    default:()=>{
+      res.send('ciao')
+    }
+  })
+
+}
+
 module.exports ={
   index,
   show,
   create,
-  download
+  download,
+  store
 }

@@ -14,7 +14,9 @@ app.get('/', (req, res) => {
   res.send(`<h1>Benvenuto nel mio blog</h1>`);
 });
 
-app.use('/posts', listRouter);
+
+
+app.use('/posts', express.urlencoded({extended:true}) , listRouter);
 
 // app.post('/posts', (req, res) => {
 //   const posts = readJSON('posts');
