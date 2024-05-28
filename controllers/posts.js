@@ -96,14 +96,33 @@ const download = (req,res)=>{
   }
 }
 
-const store = (req,res)=>{
+const updatePosts = (nuoviPost) => {
+  const filePath = path.join(__dirname, '../db/posts.json');
+  fs.writeFileSync(filePath, JSON.stringify(nuoviPost));
+  pizze = nuoviPost;
+}
 
+
+const store = (req,res)=>{
+  const{titolo,contenuto,tags}=req.body
   res.format({
     html:()=>{
+      if(!titolo || !contenuto || !tags){
+        return res.stats(400).send('Alcuni dati mancano');
+      }
+
+      const nuovoPost={
+        titolo,
+        contenuto,
+        tags,
+      }
+
+      updatePosts([...posts, nuovoPost ]);
       res.status(200).redirect('/posts')
     },
     default:()=>{
-      res.send('ciao')
+      
+      res.json(`titolo:${titolo},contenuto:${contenuto},tags:[${tags}]`)
     }
   })
 
