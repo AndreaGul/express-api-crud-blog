@@ -16,7 +16,7 @@ const writeJSON = (filename, data) => {
 };
 
 const updatePosts = (nuoviPost) => {
-  const filePath= path.join(__dirname, '../db/posts.json');
+  const filePath= path.join(__dirname, './db/posts.json');
   fs.writeFileSync(filePath, JSON.stringify(nuoviPost))
   return nuoviPost;
 }

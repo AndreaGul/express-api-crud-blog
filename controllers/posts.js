@@ -1,6 +1,6 @@
 
 let posts = require('../db/posts.json');
-const { readJSON , generateSlug } = require('../utils');
+const { generateSlug, updatePosts } = require('../utils');
 const path = require("path");
 const fs = require("fs");
 const slugify = require('slugify');
@@ -98,14 +98,6 @@ const download = (req,res)=>{
   }
 }
 
-const updatePosts = (nuoviPost) => {
-  const filePath= path.join(__dirname, '../db/posts.json');
-  fs.writeFileSync(filePath, JSON.stringify(nuoviPost))
-  posts = nuoviPost;
-}
-
-
-
 const store = (req,res)=>{
   const{titolo,contenuto,tags}=req.body
   res.format({
@@ -120,8 +112,8 @@ const store = (req,res)=>{
         contenuto,
         tags,
       }
-      // posts = updatePosts([...posts, nuovoPost ]);
-      updatePosts([...posts, nuovoPost ]);
+       posts = updatePosts([...posts, nuovoPost ]);
+      
       res.status(200).redirect('/posts')
     },
     default:()=>{
@@ -131,24 +123,7 @@ const store = (req,res)=>{
   })
 
 }
-const destroy = (req,res)=>{
-  const {slug}= req.params;
-  const postDaEliminare = posts.find(post => post.slug === slug);
-  if(!postDaEliminare){
-    return res.status(404).send('nessun post corrispondente');
-  }
-  const postAggiornati= posts.filter(post => post !== postDaEliminare);
-  updatePosts(postAggiornati);
 
-  res.format ({
-    html: ()=>{
-      res.status(200).redirect('/');
-    },default:()=>{
-      res.status(200).send('post eliminato');
-    }
-  })
-  
-}
 
 
 module.exports ={
@@ -156,7 +131,6 @@ module.exports ={
   show,
   create,
   download,
-  store,
-  destroy
+  store
  
 }

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const postsController = require("../controllers/posts");
-const {destroy} = require("../middlewares/middlewareDestroy")
+const {destroy } = require("../middlewares/middlewareDestroy")
 
 router.get("/", postsController.index);
 
