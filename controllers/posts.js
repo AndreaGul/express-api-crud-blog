@@ -129,6 +129,24 @@ const store = (req,res)=>{
 
 }
 
+const destroy = (req, res,next) => {
+  const { slug } = req.params;
+  
+  const postDaEliminare = posts.find(post => post.slug === slug);
+
+  const postAggiornati = posts.filter(post => post !== postDaEliminare);
+  updatePosts(postAggiornati);
+
+  res.format({
+    html: () => {
+      res.status(200).redirect('/');
+    },
+    default: () => {
+      res.status(200).send('post eliminato');
+    }
+  });
+};
+
 
 
 module.exports ={
@@ -136,6 +154,7 @@ module.exports ={
   show,
   create,
   download,
-  store
+  store,
+  destroy
  
 }
