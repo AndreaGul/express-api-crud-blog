@@ -8,7 +8,7 @@ const destroy = (req, res,next) => {
     if (!postDaEliminare) {
       return res.status(404).send('nessun post corrispondente');
     }
-    
+    req.postDaEliminare = postDaEliminare;
     next()
    
   };
